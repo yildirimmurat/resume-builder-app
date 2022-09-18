@@ -1,9 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { LinksCollection } from '/imports/api/links';
+import { TemplatesCollection } from '/imports/api/TemplatesCollection';
 
 function insertLink({ title, url }) {
   LinksCollection.insert({title, url, createdAt: new Date()});
 }
+
+const insertTemplate = color => TemplatesCollection.insert({ color: color });
 
 Meteor.startup(() => {
   // If the Links collection is empty, add some data.
@@ -27,5 +30,14 @@ Meteor.startup(() => {
       title: 'Discussions',
       url: 'https://forums.meteor.com'
     });
+  }
+
+
+  if (TemplatesCollection.find().count() === 0) {
+    [
+      '#cc88da',
+      '#89aa43',
+      '#a2a289'
+    ].forEach(insertTemplate)
   }
 });
